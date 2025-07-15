@@ -21,18 +21,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
         
         // Create participants list HTML
-        let participantsHtml = '';
+        const participantsSection = document.createElement("div");
+        participantsSection.className = "participants-section";
+
         if (details.participants.length > 0) {
-          participantsHtml = `
-            <div class="participants-section">
-              <p><strong>Participants (${details.participants.length}):</strong></p>
-              <ul class="participants-list">
-                ${details.participants.map(email => `<li>${email}</li>`).join('')}
-              </ul>
-            </div>
-          `;
+          const participantsTitle = document.createElement("p");
+          participantsTitle.innerHTML = `<strong>Participants (${details.participants.length}):</strong>`;
+          participantsSection.appendChild(participantsTitle);
+
+          const participantsList = document.createElement("ul");
+          participantsList.className = "participants-list";
+
+          details.participants.forEach(email => {
+            const listItem = document.createElement("li");
+            listItem.textContent = email;
+            participantsList.appendChild(listItem);
+          });
+
+          participantsSection.appendChild(participantsList);
         } else {
-          participantsHtml = '<p><strong>Participants:</strong> No participants yet</p>';
+          const noParticipantsMessage = document.createElement("p");
+          noParticipantsMessage.innerHTML = "<strong>Participants:</strong> No participants yet";
+          participantsSection.appendChild(noParticipantsMessage);
         }
 
         activityCard.innerHTML = `
